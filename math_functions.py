@@ -14,6 +14,38 @@ def uus_tehe():
     lahendus = a + i * b
     return [tekst, lahendus]
 
+def liitmine():
+    a = randint(0, max_arv)
+    b = randint(0, a)
+    
+    tekst = str(a) + " + " + str(b) + "= ?"
+    lahendus = a + b
+    return [tekst, lahendus]
+
+def lahutamine():
+    a = randint(0, max_arv)
+    b = randint(0, a)
+    
+    tekst = str(a) + " - " + str(b) + "= ?"
+    lahendus = a + b
+    return [tekst, lahendus]
+
+def korrutamine():
+    a = randint(0, max_arv)
+    b = randint(0, a)
+    
+    tekst = str(a) + " * " + str(b) + "= ?"
+    lahendus = a * b
+    return [tekst, lahendus]
+
+def jagamine():
+    a = randint(0, max_arv)
+    b = randint(0, a)
+    
+    tekst = str(a) + " / " + str(b) + "= ?"
+    lahendus = a / b
+    return [tekst, lahendus]
+
 global max_arv
 max_arv = 10
 while True:

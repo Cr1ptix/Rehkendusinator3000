@@ -62,22 +62,27 @@ while True:
 
         operation_window, correct_answer = create_operation_window(operation)
         
+        global punktid
+        punktid = 0
+        
         while True:
             op_event, op_values = operation_window.read()
             if op_event == sg.WIN_CLOSED or op_event == 'Tagasi':
                 operation_window.close()
-                break  # Väljuge tehete lahendamise tsüklist
+                break  # Välju tehete lahendamise loopist
             if op_event == 'Kontrolli':
                 try:
-                    user_answer = float(op_values['USER_ANSWER'])
+                    user_answer = int(op_values['USER_ANSWER'])
                     if user_answer == correct_answer:
-                        sg.popup("Õige vastus!")
+                        punktid += 1
+                        sg.popup_timed("Õige vastus! Sul on " + str(punktid) + " punkti.")
                     else:
-                        sg.popup(f"Vale vastus! Õige vastus on: {correct_answer}")
+                        punktid -= 1
+                        sg.popup("Vale vastus! Õige vastus on: " + str(correct_answer) + ". Sul on " + str(punktid) + " punkti.")
                 except ValueError:
                     sg.popup("Palun sisestage kehtiv number.")
 
-                # Generatsioon uue tehte jaoks
+                # Uue tehte loomine
                 operation_window.close()  # Sulgeme vana akna
                 operation_window, correct_answer = create_operation_window(operation)  # Loome uue akna
 
