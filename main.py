@@ -1,6 +1,7 @@
 import PySimpleGUI as sg
 import math_function
 
+# Loome rehkenduse akna
 def create_operation_window(operation):
     if operation == 'LIITMINE':
         layout = [
@@ -29,6 +30,7 @@ def create_operation_window(operation):
 
     return sg.Window(f"{operation} - Rehkendusinator3000", layout)
 
+# Peamine aken tehete valimiseks
 def create_main_window():
     layout = [
         [sg.Text("Mis tehteid soovid teha?")],
@@ -56,8 +58,8 @@ while True:
             operation_window = create_operation_window('JAGAMINE')
 
         window.close()
-
-        while True:
+    
+        while True: # Tehtega tegevus
             op_event, op_values = operation_window.read()
             if op_event == sg.WIN_CLOSED or op_event == 'Tagasi':
                 operation_window.close()
