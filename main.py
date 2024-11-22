@@ -1,5 +1,24 @@
 import PySimpleGUI as sg
-import math_function
+from random import randint
+
+def uus_tehe():
+    #Kas liitmine või lahutamine
+    i = randint(0, 1)
+    x = "+"
+    if i == 0:
+        i = -1
+        x = "-"
+    #Määra suvalised arvud
+    a = randint(0, max_arv)
+    b = randint(0, a)
+    #Vormista tehe
+    tekst = str(a) + x + str(b) + "= ?"
+    lahendus = a + i * b
+    return [tekst, lahendus]
+
+global max_arv
+max_arv = 10
+
 
 # Loome rehkenduse akna
 def create_operation_window(operation):
