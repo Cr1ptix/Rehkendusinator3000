@@ -1,1 +1,4 @@
-Grupi liikmed: Ats Põtter, Andre Alas, Richard Killak
+# Probleem
+
+## Grupi liikmed
+Ats Põtter, Andre Alas, Richard Killak
