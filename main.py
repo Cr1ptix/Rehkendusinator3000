@@ -5,7 +5,6 @@ global max_arv
 max_arv = 10
 
 def uus_tehe(operation):
-    # Määra suvalised arvud
     a = randint(0, max_arv)
     b = randint(0, a)
     
@@ -19,14 +18,12 @@ def uus_tehe(operation):
         tekst = f"{a} * {b} = ?"
         lahendus = a * b
     elif operation == 'JAGAMINE':
-        # Veendume, et jagamine ei oleks nulliga
-        b = randint(1, max_arv)  # b ei tohi olla 0
+        b = randint(1, max_arv)
         tekst = f"{a} / {b} = ?"
         lahendus = a / b
     
     return [tekst, lahendus]
 
-# Loome rehkenduse akna
 def create_operation_window(operation):
     tehe, lahendus = uus_tehe(operation)
     layout = [
@@ -36,7 +33,6 @@ def create_operation_window(operation):
     ]
     return sg.Window("Rehkendusinator3000 - Tehe", layout), lahendus
 
-# Peamine aken tehete valimiseks
 def create_main_window():
     layout = [
         [sg.Text("Mis tehteid soovid teha?")],
@@ -64,13 +60,12 @@ while True:
 
         window.close()
 
-        # Alustame lõpmatute tehete tegemist
         operation_window, correct_answer = create_operation_window(operation)
         
-        while True:  # Tehtega tegevus
+        while True:
             op_event, op_values = operation_window.read()
             if op_event == sg.WIN_CLOSED or op_event == 'Tagasi':
-                operation_window.close()  # Sulgeme tehete lahendamise akna
+                operation_window.close()
                 break  # Väljuge tehete lahendamise tsüklist
             if op_event == 'Kontrolli':
                 try:
@@ -83,7 +78,8 @@ while True:
                     sg.popup("Palun sisestage kehtiv number.")
 
                 # Generatsioon uue tehte jaoks
-                operation_window, correct_answer = create_operation_window(operation)
+                operation_window.close()  # Sulgeme vana akna
+                operation_window, correct_answer = create_operation_window(operation)  # Loome uue akna
 
         window = create_main_window()  # Avame tehete valimise akna
 
