@@ -1,5 +1,6 @@
-import PySimpleGUI as sg
-from random import randint
+import tkinter as tk
+from tkinter import messagebox
+from random import randint, choice
 
 global max_arv
 max_arv = 10
@@ -7,7 +8,8 @@ max_arv = 10
 # Hoiame juba genereeritud vastuseid
 generated_answers = set()
 
-def uus_tehe(operation):
+def uus_tehe(operations):
+    operation = choice(operations)
     a = randint(0, max_arv)
     
     if operation == 'LIITMINE':
@@ -32,82 +34,77 @@ def uus_tehe(operation):
         tekst = f"{a} / {b} = ?"
         lahendus = a // b  # Kasutame täisarv jagamist
 
-    return [tekst, lahendus]
+    return tekst, lahendus
 
-def create_operation_window(operation, score):
-    global generated_answers
-    while True:
-        tehe, lahendus = uus_tehe(operation)
-        if lahendus not in generated_answers:
-            generated_answers.add(lahendus)
-            break
-    
-    layout = [
-        [sg.Text(tehe, key='TEHE')],  # Lisame TEHE võtme
-        [sg.InputText(key='VASTUS')],
-        [sg.Text('', key='RESULT', size=(40, 1))],  # Tulemuse tekst
-        [sg.Text(f"Punktid: {score}", key='SCORE')],  # Punktide tekst
-        [sg.Button('Kontrolli'), sg.Button('Tagasi')]
-    ]
-    return sg.Window("Rehkendusinator3000 - Tehe", layout), lahendus
+class MainWindow(tk.Tk):
+    def __init__(self):
+        super().__init__()
+
+        self.score = 0
+        self.total_questions = 0
+        self.correct_answer = None
+        self.operations = ['LIITMINE', 'LAHUTAMINE', 'KORRUTAMINE', 'JAGAMINE']
+        self.selected_operations = []
+        self.initUI()
+
+    def initUI(self):
+        self.title('Rehkendusinator3000')
+        self.geometry('350x300')
+
+        self.tehe_label = tk.Label(self, text='Tehe:', font=('Arial', 9))
+        self.tehe_label.pack(pady=10)
+
+        self.answer_input = tk.Entry(self, font=('Arial', 9))
+        self.answer_input.pack(pady=10)
+
+        self.check_button = tk.Button(self, text='Kontrolli', command=self.check_answer, font=('Arial', 9))
+        self.check_button.pack(pady=10)
+
+        self.result_label = tk.Label(self, text='', font=('Arial', 9))
+        self.result_label.pack(pady=10)
+
+        self.score_label = tk.Label(self, text='Punktid: 0 / 0', font=('Arial', 9))
+        self.score_label.pack(pady=10)
+
+        self.operation_vars = {op: tk.BooleanVar(value=True) for op in self.operations}
+        operation_frame = tk.Frame(self)
+        operation_frame.pack(pady=10)
+
+        for i, op in enumerate(self.operations):
+            cb = tk.Checkbutton(operation_frame, text=op, variable=self.operation_vars[op], font=('Arial', 9))
+            cb.grid(row=i//2, column=i%2, padx=10, pady=5)
+
+        self.new_tehe()
+
+    def new_tehe(self):
+        self.selected_operations = [op for op, var in self.operation_vars.items() if var.get()]
+        if not self.selected_operations:
+            messagebox.showwarning("Hoiatus", "Palun valige vähemalt üks tehe.")
+            return
+        self.tehe, self.correct_answer = uus_tehe(self.selected_operations)  # Loome uue tehte
+        self.tehe_label.config(text=f'Tehe: {self.tehe}')
+        self.answer_input.delete(0, tk.END)
+        self.result_label.config(text='')
+
+    def check_answer(self):
+        try:
+            user_answer = float(self.answer_input.get())
+            self.total_questions += 1
+            if user_answer == self.correct_answer:
+                self.score += 1
+                self.result_label.config(text="Õige vastus!", fg='green')
+            else:
+                self.result_label.config(text=f"Vale vastus! Õige vastus on: {self.correct_answer}", fg='red')
+
+            self.score_label.config(text=f'Punktid: {self.score} / {self.total_questions}')
+            self.new_tehe()
+
+        except ValueError:
+            self.result_label.config(text="Palun sisestage kehtiv number.", fg='red')
 
 def create_main_window():
-    layout = [
-        [sg.Text("Mis tehteid soovid teha?")],
-        [sg.Radio('Liitmine', 'CATEGORY', key='LIITMINE'), sg.Radio('Lahutamine', 'CATEGORY', key='LAHUTAMINE')],
-        [sg.Radio('Korrutamine', 'CATEGORY', key='KORRUTAMINE'), sg.Radio('Jagamine', 'CATEGORY', key='JAGAMINE')],
-        [sg.Button('Ok'), sg.Button('Tagasi')]
-    ]
-    return sg.Window("Rehkendusinator3000", layout)
+    window = MainWindow()
+    window.mainloop()
 
-window = create_main_window()
-score = 0  # Algne punktide arv
-
-while True: # Nii öelda main loop, kõik toimub siin
-    event, values = window.read()
-    if event == sg.WIN_CLOSED or event == 'Tagasi':
-        break
-    if event == 'Ok':
-        if values['LIITMINE']:
-            operation = 'LIITMINE'
-        elif values['LAHUTAMINE']:
-            operation = 'LAHUTAMINE'
-        elif values['KORRUTAMINE']:
-            operation = 'KORRUTAMINE'
-        elif values['JAGAMINE']:
-            operation = 'JAGAMINE'
-
-        window.close()
-
-        operation_window, correct_answer = create_operation_window(operation, score)
-        
-        while True: # Kui mängija on valiku teinud, algab see
-            op_event, op_values = operation_window.read()
-            if op_event == sg.WIN_CLOSED or op_event == 'Tagasi':
-                operation_window.close()
-                break  # Välju tehete lahendamise tsüklist
-            if op_event == 'Kontrolli':
-                try:
-                    user_answer = float(op_values['VASTUS'])
-                    if user_answer == correct_answer:
-                        score += 1  # Suurendame punkte õigete vastuste eest
-                        operation_window['RESULT'].update("Õige vastus!")  # Uuendame tulemuse teate
-                    else:
-                        score -= 1  # Vähendame punkte vale vastuse eest
-                        operation_window['RESULT'].update(f"Vale vastus! Õige vastus on: {correct_answer}")  # Uuendame tulemuse teate
-                    
-                    # Lisa punkte
-                    operation_window['SCORE'].update(f"Punktid: {score}")
-
-                    # Uus tehe
-                    new_tehe, new_correct_answer = uus_tehe(operation)  # Loome uue tehte
-                    operation_window['TEHE'].update(new_tehe)  
-                    correct_answer = new_correct_answer  # Uuendame õige vastuse
-                    operation_window['VASTUS'].update('')  # Teeme vastuse ala tühjaks
-
-                except ValueError:
-                    operation_window['RESULT'].update("Palun sisestage kehtiv number.")  # Uuendame tulemuse teate
-
-        window = create_main_window()  # Avame tehete valimise akna
-
-window.close()
+if __name__ == '__main__':
+    create_main_window()
