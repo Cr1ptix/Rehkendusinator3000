@@ -4,7 +4,7 @@ from random import randint
 global max_arv
 max_arv = 10
 
-# Hoidame juba genereeritud vastuseid
+# Hoiame juba genereeritud vastuseid
 generated_answers = set()
 
 def uus_tehe(operation):
@@ -43,8 +43,8 @@ def create_operation_window(operation, score):
             break
     
     layout = [
-        [sg.Text(tehe, key='TEXT')],  # Lisame TEXT võtme
-        [sg.InputText(key='USER_ANSWER')],
+        [sg.Text(tehe, key='TEHE')],  # Lisame TEHE võtme
+        [sg.InputText(key='VASTUS')],
         [sg.Text('', key='RESULT', size=(40, 1))],  # Tulemuse tekst
         [sg.Text(f"Punktid: {score}", key='SCORE')],  # Punktide tekst
         [sg.Button('Kontrolli'), sg.Button('Tagasi')]
@@ -56,16 +56,16 @@ def create_main_window():
         [sg.Text("Mis tehteid soovid teha?")],
         [sg.Radio('Liitmine', 'CATEGORY', key='LIITMINE'), sg.Radio('Lahutamine', 'CATEGORY', key='LAHUTAMINE')],
         [sg.Radio('Korrutamine', 'CATEGORY', key='KORRUTAMINE'), sg.Radio('Jagamine', 'CATEGORY', key='JAGAMINE')],
-        [sg.Button('Ok'), sg.Button('Cancel')]
+        [sg.Button('Ok'), sg.Button('Tagasi')]
     ]
     return sg.Window("Rehkendusinator3000", layout)
 
 window = create_main_window()
 score = 0  # Algne punktide arv
 
-while True:
+while True: # Nii öelda main loop, kõik toimub siin
     event, values = window.read()
-    if event == sg.WIN_CLOSED or event == 'Cancel':
+    if event == sg.WIN_CLOSED or event == 'Tagasi':
         break
     if event == 'Ok':
         if values['LIITMINE']:
@@ -81,14 +81,14 @@ while True:
 
         operation_window, correct_answer = create_operation_window(operation, score)
         
-        while True:
+        while True: # Kui mängija on valiku teinud, algab see
             op_event, op_values = operation_window.read()
             if op_event == sg.WIN_CLOSED or op_event == 'Tagasi':
                 operation_window.close()
-                break  # Väljuge tehete lahendamise tsüklist
+                break  # Välju tehete lahendamise tsüklist
             if op_event == 'Kontrolli':
                 try:
-                    user_answer = float(op_values['USER_ANSWER'])
+                    user_answer = float(op_values['VASTUS'])
                     if user_answer == correct_answer:
                         score += 1  # Suurendame punkte õigete vastuste eest
                         operation_window['RESULT'].update("Õige vastus!")  # Uuendame tulemuse teate
@@ -96,14 +96,14 @@ while True:
                         score -= 1  # Vähendame punkte vale vastuse eest
                         operation_window['RESULT'].update(f"Vale vastus! Õige vastus on: {correct_answer}")  # Uuendame tulemuse teate
                     
-                    # Uuendame punktide näitamise teksti
+                    # Lisa punkte
                     operation_window['SCORE'].update(f"Punktid: {score}")
 
-                    # Generatsioon uue tehte jaoks
+                    # Uus tehe
                     new_tehe, new_correct_answer = uus_tehe(operation)  # Loome uue tehte
-                    operation_window['TEXT'].update(new_tehe)  
+                    operation_window['TEHE'].update(new_tehe)  
                     correct_answer = new_correct_answer  # Uuendame õige vastuse
-                    operation_window['USER_ANSWER'].update('')  # Tühjendame sisendi väärtuse
+                    operation_window['VASTUS'].update('')  # Teeme vastuse ala tühjaks
 
                 except ValueError:
                     operation_window['RESULT'].update("Palun sisestage kehtiv number.")  # Uuendame tulemuse teate
