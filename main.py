@@ -3,7 +3,7 @@ from tkinter import messagebox
 from random import randint, choice
 
 global max_arv
-max_arv = 10
+max_arv = 10 # Maksimaalne arv, mis tehetes kasutusel on
 
 # Hoiame juba genereeritud vastuseid
 generated_answers = set()
@@ -51,10 +51,10 @@ class MainWindow(tk.Tk):
     # Kasutajaliidese loomine
     def initUI(self):
         self.title('Rehkendusinator3000')
-        self.geometry('350x300')
+        self.geometry('350x300') # Akna suurus
 
         self.tehe_label = tk.Label(self, text='Tehe:', font=('Arial', 9))
-        self.tehe_label.pack(pady=10)
+        self.tehe_label.pack(pady=10) 
 
         self.answer_input = tk.Entry(self, font=('Arial', 9))
         self.answer_input.pack(pady=10)
@@ -97,10 +97,10 @@ class MainWindow(tk.Tk):
             user_answer = float(self.answer_input.get())
             self.total_questions += 1
             if user_answer == self.correct_answer:
-                self.score += 1
+                self.score += 1 # Suurendame õige vastuse korral punktisummat
                 self.result_label.config(text="Õige vastus!", fg='green')
             else:
-                self.result_label.config(text=f"Vale vastus! Õige vastus on: {self.correct_answer}", fg='red')
+                self.result_label.config(text=f"Vale vastus! Õige vastus on: {self.correct_answer}", fg='red') # Vale vastuse korral näitame õiget vastust
 
             self.score_label.config(text=f'Punktid: {self.score} / {self.total_questions}')
             # Näitame tulemust ja ootame enne uue tehte loomist
