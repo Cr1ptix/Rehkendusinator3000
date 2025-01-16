@@ -48,7 +48,7 @@ class MainWindow(tk.Tk):
         self.selected_operations = []
         self.initUI()
 
-    # Kasutajaliidese loomine
+    # UI loomine
     def initUI(self):
         self.title('Rehkendusinator3000')
         self.geometry('350x300') # Akna suurus
