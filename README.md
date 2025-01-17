@@ -12,7 +12,7 @@ Miksikese-laadne rehkendusprogramm, mis õpetab lastele algklasside matemaatikat
 3. Teha tehted järk-järgult raskemaks;
 4. Teha progamm korduvaks nii, et läbi kukkudes saad uuesti alustada või programmi kinni panna.
 
-##Meeskond
+## Meeskond
 Ats Põtter,
 Andre Alas,
 Richard Killak.
