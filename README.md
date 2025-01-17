@@ -1,8 +1,10 @@
-# Probleem
+# Rehkendusinaator 3000
+
+## Probleem
 Algklasside matemaatiliste abitööriistade puudus.
-# Lahendus
+## Lahendus
 Miksikese-laadne rehkendusprogramm, mis õpetab lastele algklasside matemaatikat: liitmist, lahutamist, korrutamist ja jagamist.
-# Tööplaan
+## Tööplaan
 1. Luua kasutajaliides
 2. Luua korrutamise, liitmise, jagamise, ja lahutamise funktsioon, kasutades suvalisi täisarve.
 3. Luua taimeri funktsioon
