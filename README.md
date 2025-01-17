@@ -1,6 +1,6 @@
 # Rehkendusinaator 3000
 
-## Probleem
+## Probleem</br>
 Algklasside matemaatiliste abitööriistade puudus.
 ## Lahendus
 Miksikese-laadne rehkendusprogramm, mis õpetab lastele algklasside matemaatikat: liitmist, lahutamist, korrutamist ja jagamist.
