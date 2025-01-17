@@ -13,6 +13,6 @@ Miksikese-laadne rehkendusprogramm, mis õpetab lastele algklasside matemaatikat
 4. Teha progamm korduvaks nii, et läbi kukkudes saad uuesti alustada või programmi kinni panna.
 
 ## Meeskond
-Ats Põtter,
-Andre Alas,
+Ats Põtter,\
+Andre Alas,\
 Richard Killak.
